@@ -1,0 +1,32 @@
+@media print{
+
+body{
+background:white;
+}
+
+#cameraContainer,
+#controls,
+h2{
+display:none;
+}
+
+#strip{
+width:80mm;
+margin:auto;
+padding:0;
+background:white;
+box-shadow:none;
+}
+
+#strip img{
+width:100%;
+margin:0;
+border-radius:0;
+}
+
+@page{
+size:80mm auto;
+margin:0;
+}
+
+}
