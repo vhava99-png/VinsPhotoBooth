@@ -1,32 +1,37 @@
-@media print{
+/* ===== 80mm Thermal Print Layout ===== */
 
-body{
-background:white;
+@page {
+  size: 80mm auto;
+  margin: 0;
 }
 
-#cameraContainer,
-#controls,
-h2{
-display:none;
-}
+@media print {
 
-#strip{
-width:80mm;
-margin:auto;
-padding:0;
-background:white;
-box-shadow:none;
-}
+  body {
+    width: 80mm;
+    margin: 0;
+    padding: 0;
+    background: white;
+  }
 
-#strip img{
-width:100%;
-margin:0;
-border-radius:0;
-}
+  .receipt {
+    width: 72mm; /* printable width */
+    margin: 0 auto;
+    font-family: monospace;
+    font-size: 12px;
+    text-align: center;
+    box-shadow: none;
+  }
 
-@page{
-size:80mm auto;
-margin:0;
-}
+  .photos img {
+    width: 100%;
+    height: auto;
+    margin: 3px 0;
+  }
+
+  .controls,
+  #camera {
+    display: none; /* hide UI when printing */
+  }
 
 }
