@@ -2,166 +2,97 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
 <title>CFD Photobooth</title>
 
 <style>
 
 body{
-font-family:'Comic Sans MS',sans-serif;
-background:linear-gradient(135deg,#ff7a18,#ffd700,#4facfe);
-background-size:400% 400%;
-animation:bgmove 12s infinite alternate;
-color:white;
+font-family:monospace;
 text-align:center;
+background:#f0f0f0;
 margin:0;
+padding:20px;
 }
 
-@keyframes bgmove{
-0%{background-position:0% 50%;}
-100%{background-position:100% 50%;}
-}
-
-h2{
-font-size:32px;
-margin-top:15px;
-text-shadow:2px 2px 6px rgba(0,0,0,0.3);
-}
-
-/* MAIN LAYOUT */
-
-#main{
-display:flex;
-justify-content:center;
-align-items:flex-start;
-gap:30px;
-margin-top:15px;
-}
-
-/* CAMERA BLOCK */
-
-#cameraBlock{
-display:flex;
-flex-direction:column;
-align-items:center;
-}
-
-/* CAMERA */
-
-#cameraContainer{
-position:relative;
-background:white;
-padding:12px;
-border-radius:16px;
-box-shadow:0 6px 18px rgba(0,0,0,0.25);
+.container{
+width:90%;
+max-width:500px;
+margin:auto;
 }
 
 video{
-width:760px;
-border-radius:12px;
-filter:grayscale(100%);
+width:100%;
+border-radius:10px;
 }
 
-/* COUNTDOWN */
-
-#countdown{
-position:absolute;
-top:50%;
-left:50%;
-transform:translate(-50%,-50%);
-font-size:120px;
-font-weight:bold;
-color:white;
-text-shadow:4px 4px 15px black;
-pointer-events:none;
-}
-
-/* BUTTONS */
-
-#controls{
-margin-top:15px;
+.controls{
+margin-top:10px;
 }
 
 button{
-border:none;
-padding:11px 20px;
-margin:6px;
+padding:10px 16px;
 font-size:16px;
-font-weight:bold;
-border-radius:40px;
-cursor:pointer;
+margin:5px;
+border:none;
+border-radius:8px;
+background:black;
 color:white;
-transition:0.25s;
-box-shadow:0 5px 12px rgba(0,0,0,0.25);
 }
 
-button:hover{
-transform:scale(1.06);
-}
-
-.startBtn{background:#2ecc71;}
-.retakeBtn{background:#f39c12;}
-.printBtn{background:#e74c3c;}
-
-/* RECEIPT PREVIEW */
-
-#strip{
-width:175px;
+.receipt-preview{
+margin-top:20px;
 background:white;
 padding:10px;
 border-radius:6px;
-box-shadow:0 6px 18px rgba(0,0,0,0.25);
-color:black;
-font-family:monospace;
-font-size:10px;
+}
+
+.receipt{
+width:72mm;
+margin:auto;
 text-align:center;
+font-size:12px;
+line-height:1.4;
 }
 
-#photos img{
+.receipt img{
 width:100%;
-margin-bottom:2px;
-filter:grayscale(100%);
+margin:3px 0;
 }
 
-#photos img:last-child{
-margin-bottom:0;
-}
-
-.receiptHeader{
-margin-bottom:6px;
-}
-
-.receiptFooter{
-margin-top:6px;
+.divider{
+border-top:1px dashed black;
+margin:6px 0;
 }
 
 /* PRINT SETTINGS */
 
-@media print{
-
-#cameraBlock,
-h2{
-display:none;
-}
-
-body{
-background:white;
-}
-
-#strip{
-width:80mm;
-margin:auto;
-padding:0;
-box-shadow:none;
-}
-
-#photos img{
-width:100%;
-margin:0;
-}
-
 @page{
 size:80mm auto;
 margin:0;
+}
+
+@media print{
+
+body{
+width:80mm;
+margin:0;
+padding:0;
+background:white;
+}
+
+.container{
+display:none;
+}
+
+.receipt-preview{
+display:block;
+}
+
+.receipt{
+width:72mm;
+margin:auto;
 }
 
 }
@@ -171,62 +102,156 @@ margin:0;
 
 <body>
 
-<h2>🎉 CFD Fun Photobooth 🚶📸</h2>
+<div class="container">
 
-<div id="main">
+<h2>CFD Photobooth</h2>
 
-<div id="cameraBlock">
+<video id="video" autoplay playsinline></video>
 
-<div id="cameraContainer">
-<video id="video" autoplay></video>
-<div id="countdown"></div>
-</div>
+<div class="controls">
 
-<div id="controls">
-<button class="startBtn" onclick="startCapture()">📸 Start</button>
-<button class="retakeBtn" onclick="retake()">🔁 Retake</button>
-<button class="printBtn" onclick="printStrip()">🖨 Print</button>
-</div>
+<button onclick="takePhoto()">Take Photo</button>
+
+<button onclick="resetPhotos()">Reset</button>
+
+<button onclick="printReceipt()">Print</button>
 
 </div>
 
-<div id="strip">
-
-<div class="receiptHeader">
------------------------------<br>
-<b>CFD PHOTOBOOTH</b><br>
-Kediri Sunday Run<br><br>
-
-<span id="datetime"></span>
-<br><br>
 </div>
+
+<div class="receipt-preview">
+
+<div class="receipt" id="receipt">
+
+<div class="divider"></div>
+
+<div><b>CFD PHOTOBOOTH</b></div>
+<div>Kediri Sunday Run</div>
+
+<div id="datetime"></div>
+
+<br>
 
 <div id="photos"></div>
 
-<div class="receiptFooter">
+<div class="divider"></div>
+
+<div>Items</div>
+<div>Jogging</div>
+<div>Friends</div>
+<div>Happiness</div>
 
 <br>
------------------------------<br>
 
-Items<br>
-Jogging<br>
-Friends<br>
-Happiness<br><br>
+<div><b>Total: GOOD DAY</b></div>
 
-Total: GOOD DAY<br><br>
+<br>
 
-Visit Again ❤️<br>
+<div>Visit Again ❤️</div>
 
------------------------------
+<div class="divider"></div>
 
 </div>
 
 </div>
 
-</div>
+<script>
 
-<script src="app.js"></script>
+const video = document.getElementById("video");
+const photosDiv = document.getElementById("photos");
+
+let photos=[];
+
+/* CAMERA */
+
+navigator.mediaDevices.getUserMedia({video:true})
+.then(stream=>{
+video.srcObject=stream;
+});
+
+/* DATE TIME */
+
+function updateDateTime(){
+
+const now=new Date();
+
+const options={
+month:"short",
+year:"numeric"
+};
+
+const date=now.toLocaleDateString(undefined,options);
+
+const time=now.toLocaleTimeString([],{
+hour:"2-digit",
+minute:"2-digit"
+});
+
+document.getElementById("datetime").innerText=date+" | "+time;
+
+}
+
+updateDateTime();
+
+/* TAKE PHOTO */
+
+function takePhoto(){
+
+if(photos.length>=4)return;
+
+const canvas=document.createElement("canvas");
+canvas.width=576;
+canvas.height=432;
+
+const ctx=canvas.getContext("2d");
+
+ctx.drawImage(video,0,0,canvas.width,canvas.height);
+
+const img=document.createElement("img");
+img.src=canvas.toDataURL("image/png");
+
+photos.push(img.src);
+
+renderPhotos();
+
+}
+
+/* SHOW PHOTOS */
+
+function renderPhotos(){
+
+photosDiv.innerHTML="";
+
+photos.forEach(p=>{
+
+const img=document.createElement("img");
+img.src=p;
+
+photosDiv.appendChild(img);
+
+});
+
+}
+
+/* RESET */
+
+function resetPhotos(){
+
+photos=[];
+renderPhotos();
+
+}
+
+/* PRINT */
+
+function printReceipt(){
+
+window.print();
+
+}
+
+</script>
 
 </body>
-
 </html>
