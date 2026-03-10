@@ -6,7 +6,7 @@ let photos=[]
 let capturing=false
 let retakeCount=0
 
-const MAX_PHOTOS=4
+const MAX_PHOTOS=3
 const MAX_RETAKE=2
 
 navigator.mediaDevices.getUserMedia({video:true})
@@ -119,7 +119,38 @@ startCapture()
 }
 
 function printStrip(){
-window.print()
+const canvas=document.createElement("canvas")
+const ctx=canvas.getContext("2d")
+
+const images=await Promise.all(
+photos.map(src=>{
+return new Promise(res=>{
+const img=new Image()
+img.onload=()=>res(img)
+img.src=src
+})
+})
+)
+
+const width=images[0].width
+const height=images[0].height*images.length
+
+canvas.width=width
+canvas.height=height
+
+images.forEach((img,i)=>{
+ctx.drawImage(img,0,i*img.height)
+})
+
+const data=canvas.toDataURL("image/png")
+
+await fetch("http://10.76.321.1/print",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({image:data})
+})
 }
 
 function countdown(sec){
@@ -166,5 +197,6 @@ const hours=now.getHours().toString().padStart(2,'0')
 const mins=now.getMinutes().toString().padStart(2,'0')
 
 el.innerText=`${month} ${year}  |  ${hours}:${mins}`
+
 
 }
