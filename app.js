@@ -144,7 +144,7 @@ ctx.drawImage(img,0,i*img.height)
 
 const data=canvas.toDataURL("image/png")
 
-await fetch("http://10.76.321.1/print",{
+await fetch("http://10.76.127.1/print",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
@@ -200,3 +200,4 @@ el.innerText=`${month} ${year}  |  ${hours}:${mins}`
 
 
 }
+
