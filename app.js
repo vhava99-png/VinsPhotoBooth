@@ -118,12 +118,18 @@ startCapture()
 
 }
 
-function printStrip(){
+async function printStrip(){
+
+if(!capturedPhotos || capturedPhotos.length === 0){
+console.log("No photos to print")
+return
+}
+
 const canvas=document.createElement("canvas")
 const ctx=canvas.getContext("2d")
 
 const images=await Promise.all(
-photos.map(src=>{
+capturedPhotos.map(src=>{
 return new Promise(res=>{
 const img=new Image()
 img.onload=()=>res(img)
@@ -133,24 +139,27 @@ img.src=src
 )
 
 const width=images[0].width
-const height=images[0].height*images.length
+const height=images.reduce((h,img)=>h+img.height,0)
 
 canvas.width=width
 canvas.height=height
 
-images.forEach((img,i)=>{
-ctx.drawImage(img,0,i*img.height)
+let y=0
+images.forEach(img=>{
+ctx.drawImage(img,0,y)
+y+=img.height
 })
 
 const data=canvas.toDataURL("image/png")
 
-await fetch("http://10.76.127.1/print",{
+fetch("http://10.76.231.1/print",{
 method:"POST",
 headers:{
 "Content-Type":"application/json"
 },
 body:JSON.stringify({image:data})
 })
+
 }
 
 function countdown(sec){
@@ -200,4 +209,5 @@ el.innerText=`${month} ${year}  |  ${hours}:${mins}`
 
 
 }
+
 
